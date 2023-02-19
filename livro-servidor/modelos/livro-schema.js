@@ -7,3 +7,6 @@ const LivroSchema = new banco.Schema({
     resumo: { type: String, required: true },
     autores: { type: [String], required: true }
 });
+
+const Livro = banco.model('Livro', LivroSchema, 'livros');
+module.exports = Livro;
