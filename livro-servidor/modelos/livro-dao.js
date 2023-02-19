@@ -11,3 +11,10 @@ const incluir = async (livro) => {
     const novoLivro = await Livro.create(livro);
     return novoLivro;
 };
+
+const excluir = async (codigo) => {
+    const resultado = await Livro.deleteOne({ _id: codigo });
+    return resultado;
+};
+
+module.exports = { obterLivros, incluir, excluir };
