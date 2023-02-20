@@ -49,7 +49,7 @@ export class ControleLivrosService {
     return data.ok;
   }
 
-  async excluir(codigo: number): Promise<boolean> {
+  async excluir(codigo: string): Promise<boolean> {
     const response = await fetch(`${baseURL}/${codigo}`, {
       method: 'DELETE',
     });
