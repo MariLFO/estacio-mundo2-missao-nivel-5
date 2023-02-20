@@ -10,7 +10,7 @@ interface LivroMongo {
     autores: Array<string>;
 }
 
-export default class ControleLivro {
+export default class ControleLivros {
 
     async incluir(livro: Livro) {
         const livroMongo: LivroMongo = {

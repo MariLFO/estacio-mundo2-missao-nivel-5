@@ -1,5 +1,5 @@
 import ControleEditora from "@/classes/controle/ControleEditora";
-import ControleLivro from "@/classes/controle/ControleLivros";
+import ControleLivros from "@/classes/controle/ControleLivros";
 import Livro from "@/classes/modelo/Livro";
 
 const controleEditora = new ControleEditora();

@@ -1,7 +1,7 @@
-import ControleLivro from "@/classes/controle/ControleLivros";
+import ControleLivros from "@/classes/controle/ControleLivros";
 import {NextApiRequest, NextApiResponse} from "next";
 
-export const controleLivro = new ControleLivro();
+export const controleLivro = new ControleLivros();
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
     switch (req.method) {
