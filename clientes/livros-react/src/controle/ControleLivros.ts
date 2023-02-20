@@ -1,39 +1,54 @@
 import Livro from "../modelo/Livro";
 
-const livros : Array<Livro> = [{
-    codigo: 1,
-    codEditora: 1,
-    titulo: "Título 1",
-    resumo: "Resumo 1",
-    autores: ["Autor 1", "Autor 2", "Autor 3"]
-},{
-    codigo: 2,
-    codEditora: 2,
-    titulo: "Título 2",
-    resumo: "Resumo 2",
-    autores: ["Autor 1", "Autor 2", "Autor 3"]
-},{
-    codigo: 3,
-    codEditora: 3,
-    titulo: "Título 3",
-    resumo: "Resumo 3",
-    autores: ["Autor 1", "Autor 2", "Autor 3"]
-}];
+const baseURL = "http://localhost:3030/livros";
+
+interface LivroMongo {
+    _id: string | null;
+    codEditora: number;
+    titulo: string;
+    resumo: string;
+    autores: Array<string>;
+}
 
 export default class ControleLivro {
-    incluir(livro: Livro) {
-        livro.codigo = livros.length > 0
-            ? livros.at(-1)!.codigo + 1
-            : 1;
-        livros.push(livro);
+
+    async incluir(livro: Livro) {
+        const livroMongo: LivroMongo = {
+            _id: null,
+            codEditora: livro.codEditora,
+            titulo: livro.titulo,
+            resumo: livro.resumo,
+            autores: livro.autores,
+        };
+        const response = await fetch(baseURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(livroMongo),
+        });
+        const data = await response.json();
+        return data.ok;
     }
 
-    excluir(codigo: number) {
-        const index = livros.findIndex(livro => livro.codigo == codigo);
-        livros.splice(index, 1);
+    async excluir(codigo: string) {
+        const response = await fetch(`${baseURL}/${codigo}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        return data.ok;
     }
 
-    obterLivros() {
+    async obterLivros() {
+        const response = await fetch(baseURL);
+        const data = await response.json();
+        const livros = data.map((livro: LivroMongo) => new Livro(
+            livro._id,
+            livro.codEditora,
+            livro.titulo,
+            livro.resumo,
+            livro.autores
+        ));
         return livros;
     }
 }
