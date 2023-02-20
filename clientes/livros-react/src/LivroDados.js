@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import Livro from "./modelo/Livro";
 import ControleLivro from "./controle/ControleLivros";
 import ControleEditora from "./controle/ControleEditora";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +11,7 @@ const LivroDados = props => {
     const [titulo, setTitulo] = useState("");
     const [resumo, setResumo] = useState("");
     const [autores, setAutores] = useState("");
-    const [codEditora, setCodEditora] = useState(opcoes[0]);
+    const [codEditora, setCodEditora] = useState(opcoes[0].codEditora);
     const navigate = useNavigate();
 
     const tratarCombo = (event) => {
@@ -22,14 +21,14 @@ const LivroDados = props => {
     const incluir = (event) => {
         event.preventDefault();
         const livro = {
-            codigo: 0,
+            codigo: "",
             codEditora: codEditora,
             titulo: titulo,
             resumo: resumo,
             autores: autores.split("\n")
         };
-        controleLivros.incluir(livro);
-        navigate("/");
+        controleLivros.incluir(livro)
+            .then(_ => navigate("/"));
     };
 
     return (
