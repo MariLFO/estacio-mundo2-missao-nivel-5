@@ -1,51 +1,59 @@
 import { Injectable } from '@angular/core';
 import { Livro } from './livro';
 
+const baseURL = "http://localhost:3030/livros";
+
+interface LivroMongo {
+  _id: string | null;
+  codEditora: number;
+  titulo: string;
+  resumo: string;
+  autores: Array<string>;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ControleLivrosService {
-  livros: Array<Livro> = [
-    {
-      codigo: 1,
-      codEditora: 1,
-      titulo: 'Use a Cabeça: Java',
-      resumo: 'Use a Cabeça! Java é uma experiência completa de aprendizado em programação orientada a objectos (OO) e Java.',
-      autores: ['Bert Bates', 'Kathy Sierra']
-    },
-    {
-      codigo: 2,
-      codEditora: 2,
-      titulo: 'Java, como Progamar',
-      resumo: 'Milhões de alunos e profissionais aprenderam programação e desenvolvimento de software com os livros Deitel',
-      autores: ['Paul Deitel', 'Harvey Deitel']
-    },
-    {
-      codigo: 3,
-      codEditora: 3,
-      titulo: 'Livro 3',
-      resumo: 'Resumo do Livro 3',
-      autores: ['Autor 5']
-    }
-  ];
-
   constructor() { }
 
-  obterLivros(): Array<Livro> {
-    return this.livros;
+  async obterLivros(): Promise<Array<Livro>> {
+    const response = await fetch(baseURL);
+    const data = await response.json();
+    const livros = data.map((livro: LivroMongo) => new Livro(
+      livro._id!,
+      livro.codEditora,
+      livro.titulo,
+      livro.resumo,
+      livro.autores
+    ));
+    return livros;
   }
 
-  incluir(livro: Livro): void {
-    livro.codigo = this.livros.length > 0
-      ? this.livros[this.livros.length -1].codigo + 1
-      : 1;
-    this.livros.push(livro);
+  async incluir(livro: Livro): Promise<boolean> {
+    const livroMongo: LivroMongo = {
+      _id: null,
+      codEditora: livro.codEditora,
+      titulo: livro.titulo,
+      resumo: livro.resumo,
+      autores: livro.autores,
+    };
+    const response = await fetch(baseURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(livroMongo),
+    });
+    const data = await response.json();
+    return data.ok;
   }
 
-  excluir(codigo: number): void {
-    const index = this.livros.findIndex(livro => livro.codigo === codigo);
-    if (index !== -1) {
-      this.livros.splice(index, 1);
-    }
+  async excluir(codigo: number): Promise<boolean> {
+    const response = await fetch(`${baseURL}/${codigo}`, {
+      method: 'DELETE',
+    });
+    const data = await response.json();
+    return data.ok;
   }
 }
