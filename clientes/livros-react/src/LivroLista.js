@@ -33,13 +33,14 @@ const LivroLista = () => {
     const [carregado, setCarregado] = useState(false);
 
     useEffect(() => {
-        setLivros(controleLivros.obterLivros());
-        setCarregado(true);
+        controleLivros.obterLivros()
+            .then(livros => setLivros(livros))
+            .then(() => setCarregado(true));
     }, [carregado]);
 
     const excluir = (codigo) => {
-        controleLivros.excluir(codigo);
-        setCarregado(false);
+        controleLivros.excluir(codigo)
+            .then(() => setCarregado(false));
     }
 
     return (
@@ -55,9 +56,9 @@ const LivroLista = () => {
                     </tr>
                 </thead>
                 <tbody>
-                {livros.map(livro => (
+                {livros.map((livro, index) => (
                     <LinhaLivro
-                        key={livro.codigo}
+                        key={index}
                         livro={livro}
                         excluir={excluir}
                         getNomeEditora={controleEditora.getNomeEditora}
