@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import ControleLivro from "./controle/ControleLivros";
+import ControleLivros from "./controle/ControleLivros";
 import ControleEditora from "./controle/ControleEditora";
 import { useNavigate } from "react-router-dom";
 
-const controleLivros = new ControleLivro();
+const controleLivros = new ControleLivros();
 const controleEditora = new ControleEditora();
 
 const LivroDados = props => {

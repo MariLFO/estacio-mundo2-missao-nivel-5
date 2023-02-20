@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
-import ControleLivro from "./controle/ControleLivros";
+import ControleLivros from "./controle/ControleLivros";
 import ControleEditora from "./controle/ControleEditora";
 
-const controleLivros = new ControleLivro();
+const controleLivros = new ControleLivros();
 const controleEditora = new ControleEditora();
 
 const LinhaLivro = props => {
