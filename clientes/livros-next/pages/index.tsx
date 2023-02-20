@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
-      <BrowserRouter>
+      <>
           <Head>
             <title>Loja Next</title>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,6 +20,6 @@ export default function Home() {
             <div className="container">
             </div>
           </main>
-      </BrowserRouter>
+      </>
   )
 }

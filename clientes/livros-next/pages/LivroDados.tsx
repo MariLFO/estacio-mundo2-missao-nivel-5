@@ -6,26 +6,16 @@ import Livro from "@/classes/modelo/Livro";
 import {Menu} from "@/componentes/Menu";
 import Head from "next/head";
 import {useRouter} from "next/router";
+import ControleLivros from "@/classes/controle/ControleLivros";
 
 const LivroDados: NextPage = () => {
     const controleEditora = new ControleEditora();
-    const baseURL = 'http://localhost:3000/api/livros';
     const [titulo, setTitulo] = useState('')
     const [resumo, setResumo] = useState('')
     const [autores, setAutores] = useState('')
     const [codEditora, setCodEditora] = useState(0)
     const router = useRouter();
-
-    const incluirLivro = async (livro:Livro) => {
-        const resposta = await fetch(baseURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(livro)
-        })
-        return resposta.ok
-    }
+    const controleLivros = new ControleLivros();
 
     const opcoes = controleEditora.getEditoras().map(editora => ({
         value: editora.codEditora,
@@ -39,15 +29,15 @@ const LivroDados: NextPage = () => {
     const incluir = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const novoLivro = {
-            codigo: 0,
+            codigo: "",
             codEditora: codEditora,
             titulo: titulo,
             resumo: resumo,
             autores: autores.split('\n'),
         } as Livro;
 
-        await incluirLivro(novoLivro);
-        await router.push('/LivroLista');
+        controleLivros.incluir(novoLivro)
+            .then(() => router.push('/LivroLista'));
     };
 
     return (
