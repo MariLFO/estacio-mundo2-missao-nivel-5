@@ -29,7 +29,7 @@ export class LivroDadosComponent implements OnInit {
 
   incluir = () => {
     this.livro.autores = this.autoresForm.split('\n');
-    this.servLivros.incluir(this.livro);
-    this.router.navigateByUrl('/lista');
+    this.servLivros.incluir(this.livro)
+      .then(() => this.router.navigateByUrl('/lista'));
   }
 }
